@@ -69,13 +69,16 @@ function deactivate_plugin_title() {
 function update_plugin_title() {
     require_once plugin_dir_path( __FILE__ ) . 'includes/Updater.php';
 
-    $token = '';
-    $updater = new Plugin_Abbr_Updater(
-      __FILE__,
-      'benhoverter',
-      'modular-wordpress-plugin-boilerplate_PLUGIN'
-    ); // TODO: TRY WITH TOKEN.
+    if( is_admin() ) {
 
+      $token = '';
+      $updater = new Plugin_Abbr_Updater(
+        __FILE__,
+        'benhoverter',
+        'modular-wordpress-plugin-boilerplate_PLUGIN'
+      ); // TODO: TRY WITH TOKEN.
+
+    }
 }
 
 

@@ -99,7 +99,7 @@ class Plugin_Abbr_Updater {
   public function __construct( $plugin_file, $github_username, $repo_name /* , $github_token */ ) {
 
       add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'set_transient' ) );
-      // add_filter( 'plugins_api', array( $this, 'set_plugin_info' ) );
+      add_filter( 'plugins_api', array( $this, 'set_plugin_info' ), 10, 3 );
       // add_filter( 'upgrader_post_install', array( $this, 'handle_post_install' ) );
 
       $this->$plugin_file     = $plugin_file;
@@ -195,7 +195,10 @@ class Plugin_Abbr_Updater {
 
         // Append the access token, if it exists:
         if( !empty( $this->github_token ) ) {
-          $zip_package = add_query_arg( array( "access_token" => $this->github_token ), $zip_package );
+          $zip_package = add_query_arg(
+            array( "access_token" => $this->github_token ),
+            $zip_package
+          );
         }
 
         $obj = new stdClass();
@@ -207,17 +210,7 @@ class Plugin_Abbr_Updater {
 
       }
 
-    }
-
-
-    /**
-    * Short Description. (use period)
-    *
-    * Long Description.
-    *
-    * @since    1.0.0
-    */
-    public function set_plugin_info() {
+      return $transient;
 
     }
 
@@ -229,8 +222,66 @@ class Plugin_Abbr_Updater {
     *
     * @since    1.0.0
     */
-    public function handle_post_install() {
+    public function set_plugin_info( $false, $action, $response ) {
+      $this->get_plugin_data();
+      $this->get_repo_release_info();
 
+      // If we aren't loading info for this plugin, do nothing:
+      if( empty( $response->slug ) || $response->slug !== $this->slug ) {
+        return false;
+      }
+
+      // Add our plugin metadata to the $response:
+      $response->last_updated = $this->github_api_result->published_at;
+      $response->slug         = $this->slug;
+      $response->plugin_name  = $this->plugin_data['name'];
+      $response->version      = $this->github_api_result->tag_name;
+      $response->author       = $this->plugin_data['AuthorName'];
+      $response->homepage     = $this->plugin_data['PluginURI'];
+
+      // The ZIP file for the release:
+      $download_link = $this->github_api_result->zipball_url;
+
+      // Append the access token, if it exists:
+      if( !empty( $this->github_token ) ) {
+        $download_link = add_query_arg(
+          array( "access_token" => $this->github_token ),
+          $download_link
+        );
+      }
+
+      $response->download_link = $download_link;
+
+    }
+
+
+    /**
+    * Renames the extracted plugin dir to match the original.
+    *
+    * WordPress expects the same dir name after extraction, but GitHub appends
+    * the version (tag_name) to the ZIP archive.  We need to rename it post-install.
+    *
+    * @since    1.0.0
+    */
+    public function handle_post_install( $true, $hook_extra, $result ) {
+
+      // Get the plugin and see if it's active before we rename anything:
+      $this->get_plugin_data();
+      $was_activated = is_plugin_active( $this->slug );
+
+      // GitHub plugin folder name goes 'reponame-tagname'.
+      // We just want 'reponame', the original.
+      global $wp_filesystem;
+      $plugin_folder = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . dirname( $this->slug );
+      $wp_filesystem->move( $result['destination'], $plugin_folder );
+      $result['destination'] = $plugin_folder;
+
+      // Re-activate if we need to:
+      if( $was_activated ) {
+        $activated = activate_plugin( $this->slug );
+      }
+
+      return $result;
     }
 
 }
