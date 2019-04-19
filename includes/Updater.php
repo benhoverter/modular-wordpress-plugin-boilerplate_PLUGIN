@@ -76,7 +76,9 @@ class Plugin_Abbr_Updater {
     * @access   private
     * @var      string    $github_api_result    The result of the GitHub API call.
     */
-    private $github_api_result;
+    public $github_api_result;  // NOTE: TESTING ONLY!
+    // private $github_api_result;
+
 
     /**
     * The access token for the GitHub repo.
@@ -94,7 +96,7 @@ class Plugin_Abbr_Updater {
     *
     * @since    1.0.0
     */
-    public function __construct( $plugin_file, $github_username, $repo_name, $github_token ) {
+  public function __construct( $plugin_file, $github_username, $repo_name /* , $github_token */ ) {
 
       add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'set_transient' ) );
       // add_filter( 'plugins_api', array( $this, 'set_plugin_info' ) );
@@ -157,7 +159,7 @@ class Plugin_Abbr_Updater {
         $this->github_api_result = @json_decode( $this->github_api_result );
       }
 
-      // Keep only the latest release:
+      // Keep only the latest release, even if it's a pre-release:
       $this->github_api_result = $this->github_api_result[0];
 
     }
@@ -172,7 +174,7 @@ class Plugin_Abbr_Updater {
     */
     public function set_transient( $transient ) {
 
-      // If WP already checked for updates, don't re-check:
+      // If WP already checked for updates, don't re-check: TODO: SHOULD BE !empty???
       if( empty( $transient->checked ) ) {
         return $transient;
       }
@@ -181,8 +183,29 @@ class Plugin_Abbr_Updater {
       $this->get_plugin_data();
       $this->get_repo_release_info();
 
-      var_dump( $this->plugin_data );
-      // var_dump( $this->github_api_result );
+
+      $has_update = version_compare(
+        $this->github_api_result->tag_name,
+        $transient->checked[$this->slug]
+      );
+
+      if( $has_update ) {
+
+        $zip_package = $this->github_api_result->zipball_url;
+
+        // Append the access token, if it exists:
+        if( !empty( $this->github_token ) ) {
+          $zip_package = add_query_arg( array( "access_token" => $this->github_token ), $zip_package );
+        }
+
+        $obj = new stdClass();
+        $obj->slug = $this->slug;
+        $obj->new_version = $this->github_api_result->tag_name;
+        $obj->url = $this->plugin_data['PluginURI'];
+        $obj->package = $zip_package;
+        $transient->response[$this->slug] = $obj;
+
+      }
 
     }
 

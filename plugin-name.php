@@ -37,7 +37,7 @@ if ( !defined( 'WPINC' ) ) {
 * Start at version 1.0.0 and use SemVer - https://semver.org
 * Rename this for your plugin and update it as you release new versions.
 */
-define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+define( 'PLUGIN_NAME_VERSION', '1.0.1' );
 
 /**
 * The code that runs during plugin activation.
@@ -70,12 +70,18 @@ function update_plugin_title() {
     require_once plugin_dir_path( __FILE__ ) . 'includes/Updater.php';
 
     $token = '';
-    $updater = new Plugin_Abbr_Updater( __FILE__, 'benhoverter', 'modular-wordpress-plugin-boilerplate' ); // TODO: TRY WITH TOKEN.
+    $updater = new Plugin_Abbr_Updater(
+      __FILE__,
+      'benhoverter',
+      'modular-wordpress-plugin-boilerplate_PLUGIN'
+    ); // TODO: TRY WITH TOKEN.
+
 }
 
 
 register_activation_hook( __FILE__, 'activate_plugin_title' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_title' );
+
 
 
 /**
@@ -97,6 +103,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/Main.php';
 function run_plugin_title() {
 
     $plugin = new Plugin_Name();
+    update_plugin_title();
     $plugin->run();
 
 }
