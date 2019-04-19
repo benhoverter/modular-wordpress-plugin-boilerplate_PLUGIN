@@ -199,6 +199,7 @@ class Plugin_Abbr_Updater {
 
     // If WP already checked for updates, don't re-check:
     if( empty( $transient->checked ) ) {
+      // print_r( 'GOT HERE.' );
       return $transient;
     }
 
@@ -324,6 +325,8 @@ class Plugin_Abbr_Updater {
   * @since    1.0.0
   */
   public function handle_post_install( $true, $hook_extra = [], $result = [] ) {
+
+    print_r( $result );
 
     // Get the plugin and see if it's active before we rename anything:
     // $this->get_plugin_data();
