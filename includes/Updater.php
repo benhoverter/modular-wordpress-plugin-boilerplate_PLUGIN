@@ -290,7 +290,7 @@ class Plugin_Abbr_Updater {
     $response->download_link = $download_link;
 
     /// TESTING:
-    // print_r( $this->github_api_result );
+    var_dump( $this->$response );
     ///
 
 
