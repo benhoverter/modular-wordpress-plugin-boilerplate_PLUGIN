@@ -131,7 +131,7 @@ class Plugin_Abbr_Updater {
     $this->slug = plugin_basename( $this->plugin_file );
 
         // print_r( $this->slug );
-        print_r(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . dirname( $this->slug ));
+        // print_r(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . dirname( $this->slug ));
 
 
     $this->plugin_data = get_plugin_data( $this->plugin_file );
@@ -303,7 +303,7 @@ class Plugin_Abbr_Updater {
   *
   * @since    1.0.0
   */
-  public function handle_pre_install( $true, $args ) {
+  public function handle_pre_install( $true, $args = [] ) {
 
     $this->get_plugin_data();
 
