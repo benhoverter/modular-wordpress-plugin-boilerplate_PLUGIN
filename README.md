@@ -1,4 +1,4 @@
-# modular-wp-plugin-boilerplate_PLUGIN
+# modular-wordpress-plugin-boilerplate_PLUGIN
 Contributors: benhoverter,
 Tags:
 Requires at least: 3.0.1
