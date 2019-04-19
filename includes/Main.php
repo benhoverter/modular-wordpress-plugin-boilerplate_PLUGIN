@@ -166,13 +166,13 @@ class Plugin_Name {
     * This action is documented in includes/Updater.php
     */
 
-    function define_plugin_updater() {
-    
+    function define_plugin_updater() { // WORKING.
+
         if( is_admin() ) {
 
           $token = '';
           $updater = new Plugin_Abbr_Updater(
-            __FILE__,
+            plugin_dir_path( __DIR__ ) . 'plugin-name.php',
             'benhoverter',
             'modular-wordpress-plugin-boilerplate_PLUGIN'
           ); // TODO: TRY WITH TOKEN.

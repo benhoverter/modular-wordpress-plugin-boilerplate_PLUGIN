@@ -109,12 +109,13 @@ class Plugin_Abbr_Updater {
 
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'set_transient' ) );
     add_filter( 'plugins_api', array( $this, 'set_plugin_info' ), 10, 3 );
-    // add_filter( 'upgrader_post_install', array( $this, 'handle_post_install' ) );
+    add_filter( 'upgrader_pre_install', array( $this, 'handle_pre_install' ) );
+    add_filter( 'upgrader_post_install', array( $this, 'handle_post_install' ) );
 
-    $this->$plugin_file     = $plugin_file;
-    $this->$github_username = $github_username;
-    $this->$repo_name       = $repo_name;
-    $this->$github_token    = $github_token;
+    $this->plugin_file     = $plugin_file; //   '/plugin-name/plugin-name.php'
+    $this->github_username = $github_username;
+    $this->repo_name       = $repo_name;
+    // $this->github_token    = $github_token;
 
   }
 
@@ -128,6 +129,11 @@ class Plugin_Abbr_Updater {
   */
   private function get_plugin_data() {
     $this->slug = plugin_basename( $this->plugin_file );
+
+        // print_r( $this->slug );
+        print_r(WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . dirname( $this->slug ));
+
+
     $this->plugin_data = get_plugin_data( $this->plugin_file );
   }
 
@@ -147,7 +153,10 @@ class Plugin_Abbr_Updater {
     }
 
     // Set the GitHub API URL:
-    $url = "https://api.github.com/repos/" . $this->username . "/" . $this->repo_name . "/releases";
+    $url = "https://api.github.com/repos/" . $this->github_username . "/" . $this->repo_name . "/releases";
+
+
+    // var_dump( $url );
 
     // Append the access token for the private repo:
     if( !empty( $this->github_token ) ) {
@@ -185,20 +194,26 @@ class Plugin_Abbr_Updater {
   */
   public function set_transient( $transient ) {
 
-    // If WP already checked for updates, don't re-check: TODO: SHOULD BE !empty???
+    // If WP already checked for updates, don't re-check:
     if( empty( $transient->checked ) ) {
       return $transient;
     }
+
 
     // Get the plugin and release info:
     $this->get_plugin_data();
     $this->get_repo_release_info();
 
+    // print_r( $this->github_api_result );
 
     $has_update = version_compare(
       $this->github_api_result->tag_name,
       $transient->checked[$this->slug]
     );
+            //
+            // print_r( $this->slug );
+            // print_r( $this->plugin_data );
+
 
     if( $has_update ) {
 
@@ -221,6 +236,8 @@ class Plugin_Abbr_Updater {
       $transient->response[$this->slug] = $obj;
 
     }
+
+            // print_r( $transient );
 
     return $transient;
 
@@ -270,8 +287,9 @@ class Plugin_Abbr_Updater {
     $response->download_link = $download_link;
 
     /// TESTING:
-    var_dump( $this->github_api_result );
+    // print_r( $this->github_api_result );
     ///
+
 
     return $response;
   }
