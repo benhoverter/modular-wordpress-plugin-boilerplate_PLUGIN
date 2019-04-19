@@ -135,6 +135,9 @@ class Plugin_Abbr_Updater {
 
 
     $this->plugin_data = get_plugin_data( $this->plugin_file );
+
+    print_r( $this->plugin_data );
+
   }
 
   /**
@@ -268,7 +271,7 @@ class Plugin_Abbr_Updater {
     // Add our plugin metadata to the $response:
     $response->last_updated = $this->github_api_result->published_at;
     $response->slug         = $this->slug;
-    $response->plugin_name  = $this->plugin_data['name'];
+    $response->plugin_name  = $this->plugin_data['Name'];
     $response->version      = $this->github_api_result->tag_name;
     $response->author       = $this->plugin_data['AuthorName'];
     $response->homepage     = $this->plugin_data['PluginURI'];
