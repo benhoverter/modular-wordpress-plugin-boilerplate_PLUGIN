@@ -9,14 +9,14 @@
 * that starts the plugin.
 *
 * @link              http://github.com/benhoverter/modular-wordpress-plugin-boilerplate
-* @since             1.0.4
+* @since             1.0.5
 * @package           plugin-name
 *
 * @wordpress-plugin
 * Plugin Name:       Plugin Name
 * Plugin URI:        https://github.com/benhoverter/modular-wordpress-plugin-boilerplate
 * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
-* Version:           1.0.4
+* Version:           1.0.5
 * Author:            Your Name
 * Author URI:        http://example.com
 * License:           GPL-2.0+
@@ -37,7 +37,7 @@ if ( !defined( 'WPINC' ) ) {
 * Start at version 1.0.0 and use SemVer - https://semver.org
 * Rename this for your plugin and update it as you release new versions.
 */
-define( 'PLUGIN_NAME_VERSION', '1.0.4' );
+define( 'PLUGIN_NAME_VERSION', '1.0.5' );
 
 /**
 * The code that runs during plugin activation.
@@ -60,26 +60,6 @@ function deactivate_plugin_title() {
     Plugin_Abbr_Deactivator::deactivate();
 }
 
-
-/**
-* The code that handles automatic updates.
-* This action is documented in includes/Updater.php
-*/
-
-function update_plugin_title() {
-    require_once plugin_dir_path( __FILE__ ) . 'includes/Updater.php';
-
-    if( is_admin() ) {
-
-      $token = '';
-      $updater = new Plugin_Abbr_Updater(
-        __FILE__,
-        'benhoverter',
-        'modular-wordpress-plugin-boilerplate_PLUGIN'
-      ); // TODO: TRY WITH TOKEN.
-
-    }
-}
 
 
 register_activation_hook( __FILE__, 'activate_plugin_title' );
@@ -106,7 +86,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/Main.php';
 function run_plugin_title() {
 
     $plugin = new Plugin_Name();
-    update_plugin_title();
     $plugin->run();
 
 }

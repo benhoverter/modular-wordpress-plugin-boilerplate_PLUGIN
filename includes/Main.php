@@ -99,6 +99,9 @@ class Plugin_Name {
         // Add required files to set_dependencies():
         $this->load_dependencies( $this->set_dependencies() );
 
+        // Instantiate the Updater object:
+        $this->define_plugin_updater();
+
         // Instantiate the Loader object:
         $this->loader = new Plugin_Abbr_Loader();
 
@@ -133,6 +136,7 @@ class Plugin_Name {
         $dependencies = array(
 
             // Includes:
+            'includes/Updater.php',
             'includes/I18n.php',
             'includes/Loader.php',
 
@@ -155,6 +159,25 @@ class Plugin_Name {
 
         return $dependencies;
 
+    }
+
+    /**
+    * The code that handles automatic updates.
+    * This action is documented in includes/Updater.php
+    */
+
+    function define_plugin_updater() {
+    
+        if( is_admin() ) {
+
+          $token = '';
+          $updater = new Plugin_Abbr_Updater(
+            __FILE__,
+            'benhoverter',
+            'modular-wordpress-plugin-boilerplate_PLUGIN'
+          ); // TODO: TRY WITH TOKEN.
+
+        }
     }
 
 
