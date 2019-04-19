@@ -326,7 +326,7 @@ class Plugin_Abbr_Updater {
   */
   public function handle_post_install( $true, $hook_extra = [], $result = [] ) {
 
-    error_log( print_r($result) );
+    error_log( print_r($result, true) );
 
     // Get the plugin and see if it's active before we rename anything:
     // $this->get_plugin_data();
@@ -344,7 +344,7 @@ class Plugin_Abbr_Updater {
       $activated = activate_plugin( $this->slug );
     }
 
-    error_log( print_r($result) );
+    error_log( print_r($result, true) );
 
     return $result;
   }
