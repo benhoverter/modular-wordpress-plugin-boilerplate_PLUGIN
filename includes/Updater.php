@@ -310,7 +310,7 @@ class Plugin_Abbr_Updater {
 
     $this->get_plugin_data();
 
-    $this->was_activated = is_plugin_activated( $this->slug );
+    $this->was_activated = is_plugin_active( $this->slug );
 
   }
 
