@@ -238,9 +238,14 @@ class Plugin_Abbr_Updater {
     $this->get_plugin_data();
     $this->get_repo_release_info();
 
-    // If we aren't loading info for this plugin, do nothing:
-    if( empty( $response->slug ) || $response->slug !== $this->slug ) {
+    // If we aren't loading info, bail:
+    if( empty( $response->slug ) || $action !== 'plugin_information' ) {
       return false;
+    }
+
+    // If we aren't loading info for this plugin, move along:
+    if( $response->slug !== $this->slug ) {
+      return $response;
     }
 
     // Add our plugin metadata to the $response:
@@ -263,6 +268,10 @@ class Plugin_Abbr_Updater {
     }
 
     $response->download_link = $download_link;
+
+    /// TESTING:
+    var_dump( $this->github_api_result );
+    ///
 
     return $response;
   }
