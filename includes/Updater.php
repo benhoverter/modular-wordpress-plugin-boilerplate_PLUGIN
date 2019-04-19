@@ -136,7 +136,7 @@ class Plugin_Abbr_Updater {
 
     $this->plugin_data = get_plugin_data( $this->plugin_file );
 
-    print_r( $this->plugin_data );
+    // print_r( $this->plugin_data );
 
   }
 
@@ -323,7 +323,7 @@ class Plugin_Abbr_Updater {
   *
   * @since    1.0.0
   */
-  public function handle_post_install( $true, $hook_extra, $result ) {
+  public function handle_post_install( $true, $hook_extra = [], $result = [] ) {
 
     // Get the plugin and see if it's active before we rename anything:
     // $this->get_plugin_data();
@@ -340,6 +340,8 @@ class Plugin_Abbr_Updater {
     if( $this->was_activated ) {
       $activated = activate_plugin( $this->slug );
     }
+
+    print_r( $result );
 
     return $result;
   }
