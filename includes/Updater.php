@@ -110,7 +110,10 @@ class Plugin_Abbr_Updater {
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'set_transient' ) );
     add_filter( 'plugins_api', array( $this, 'set_plugin_info' ), 10, 3 );
     add_filter( 'upgrader_pre_install', array( $this, 'handle_pre_install' ) );
-    add_filter( 'upgrader_post_install', array( $this, 'handle_post_install' ) );
+
+    add_filter( 'upgrader_clear_destination', array( $this, 'check_destinations' ) );
+
+    // add_filter( 'upgrader_post_install', array( $this, 'handle_post_install' ) );
 
     $this->plugin_file     = $plugin_file; //   '/plugin-name/plugin-name.php'
     $this->github_username = $github_username;
@@ -315,6 +318,15 @@ class Plugin_Abbr_Updater {
 
   }
 
+
+  private function check_destinations( $removed, $local, $remote, $hook_extra ) {
+    error_log('$result passed in: '
+      . '\n' . print_r( $removed, true)
+      . '\n' . print_r( $local, true )
+      . '\n' . print_r( $remote, true )
+    );
+
+  }
 
   /**
   * Renames the extracted plugin dir to match the original.
