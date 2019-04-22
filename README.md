@@ -7,7 +7,10 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This is a revision of the WordPress Plugin Boilerplate, intended to improve separation of concerns.
+**This project is now mothballed in favor of the new Modular WP Plugin Starter.**
+**Please visit https://github.com/benhoverter/modular-wp-plugin-starter for more info.**
+
+This was a revision of the WordPress Plugin Boilerplate, intended to improve separation of concerns.
 
 This repo stores the release version of the plugin for automatic WordPress updates.  If you're looking for the full project, visit:
 https://github.com/benhoverter/modular-wordpress-plugin-boilerplate_PROJECT
