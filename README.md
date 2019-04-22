@@ -1,4 +1,7 @@
 # modular-wordpress-plugin-boilerplate_PLUGIN
+**This project is now mothballed in favor of the new Modular WP Plugin Starter.**
+**Please visit https://github.com/benhoverter/modular-wp-plugin-starter for more info.**
+
 Contributors: benhoverter
 Tags:
 Requires at least: 3.0.1
@@ -7,8 +10,7 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-**This project is now mothballed in favor of the new Modular WP Plugin Starter.**
-**Please visit https://github.com/benhoverter/modular-wp-plugin-starter for more info.**
+
 
 This was a revision of the WordPress Plugin Boilerplate, intended to improve separation of concerns.
 
