@@ -319,7 +319,7 @@ class Plugin_Abbr_Updater {
   }
 
 
-  private function check_destinations( $removed, $local, $remote, $hook_extra ) {
+  public function check_destinations( $removed, $local, $remote, $hook_extra ) {
     error_log('$result passed in: '
       . '\n' . print_r( $removed, true)
       . '\n' . print_r( $local, true )
