@@ -109,7 +109,7 @@ class Plugin_Abbr_Updater {
 
     add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'set_transient' ) );
     add_filter( 'plugins_api', array( $this, 'set_plugin_info' ), 10, 3 );
-    add_filter( 'upgrader_pre_install', array( $this, 'handle_pre_install' ) );
+    // add_filter( 'upgrader_pre_install', array( $this, 'handle_pre_install' ) );
 
     add_filter( 'upgrader_clear_destination', array( $this, 'check_destinations' ) );
 
@@ -315,6 +315,8 @@ class Plugin_Abbr_Updater {
     $this->get_plugin_data();
 
     $this->was_activated = is_plugin_active( $this->slug );
+
+    return $true;
 
   }
 
