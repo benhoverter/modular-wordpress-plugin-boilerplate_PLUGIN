@@ -1,5 +1,5 @@
 # modular-wordpress-plugin-boilerplate_PLUGIN
-Contributors: benhoverter,
+Contributors: benhoverter
 Tags:
 Requires at least: 3.0.1
 Tested up to: 3.4
